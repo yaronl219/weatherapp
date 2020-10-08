@@ -1,7 +1,7 @@
 import Axios from "axios";
 
 
-const API_KEY = '17nM18URNW0l13ncG90uLIxINREYuwzk'
+const API_KEY = 'jbQCGr5hw3CneCAiXlvKodc3ASLREpxy'
 
 export const weatherService = {
     getCityCurrWeather,
