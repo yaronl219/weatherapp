@@ -62,7 +62,7 @@ export class _MainWeather extends Component {
 
     getWeatherForecast = async() => {
         const weatherForecast = await weatherService.getWeatherForecast(this.props.currCity.Key,this.props.isCelsius)
-        console.log(weatherForecast)
+        
         this.setState({weatherForecast})
     }
 

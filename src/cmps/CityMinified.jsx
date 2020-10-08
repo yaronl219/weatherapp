@@ -8,7 +8,7 @@ import React, { useEffect, useState } from 'react'
 export function CityMinified({ city, onRemoveFavorite, isCelsius, darkMode, onSelectCity }) {
 
     const [currWeather, setCurrWeather] = useState(null)
-    console.log(city)
+    
 
     useEffect(() => {
         if (!currWeather) _setCurrWeather()
