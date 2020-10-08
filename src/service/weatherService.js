@@ -1,7 +1,9 @@
 
 
 
-const API_KEY = 'jbQCGr5hw3CneCAiXlvKodc3ASLREpxy'
+const apiKeys = ['x6SNjBEgOiwSoE0Sm7AFRco0OWsPxKcT','jbQCGr5hw3CneCAiXlvKodc3ASLREpxy','17nM18URNW0l13ncG90uLIxINREYuwzk']
+
+const API_KEY = apiKeys[0]
 
 export const weatherService = {
     getCityCurrWeather,
@@ -57,7 +59,13 @@ function getWeatherIcon(iconNum) {
 }
 
 async function HTTPget(url) {
-    const res = await fetch(url)
-    const data = await res.json()
+    let data;
+    try {
+        const res = await fetch(url)
+        data = await res.json()
+    } catch (err) {
+        data = []
+        console.log(err)
+    }
     return data
 }
