@@ -1,0 +1,11 @@
+// base
+@import './base/base.scss';
+@import './base/fonts.scss';
+@import './base/darkMode.scss';
+@import './base/lightMode.scss';
+
+// cmps
+@import './cmps/header';
+@import './cmps/weatherContainer.scss';
+@import './cmps/bottomNav.scss';
+@import './cmps/favorites.scss';
