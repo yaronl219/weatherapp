@@ -20,15 +20,15 @@ function _App(props) {
   const location = useLocation()
 
   useEffect(() => {
-    const view = (location.pathname === '/favorites') ? 1 : 0
+    const view = (location.pathname.includes('favorites')) ? 1 : 0
     setView(view)
-
+    
   }, [location.pathname])
 
   const handleChange = (newValue) => {
     const path = (!newValue) ? 'city' : 'favorites'
     // history.push(path)
-    window.location.replace(path)
+    history.push(path)
   };
 
   const displayMode = (props.darkMode) ? 'dark' : 'light'
