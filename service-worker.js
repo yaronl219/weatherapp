@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/yaron-lipshitz-07-10-2020/precache-manifest.2056b2347ade5b0475ffe4cd0961e9b5.js"
+  "/yaron-lipshitz-07-10-2020/precache-manifest.bfb06c1c8f431666dd87c6f0cedd7f7a.js"
 );
 
 self.addEventListener('message', (event) => {
