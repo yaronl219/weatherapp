@@ -51,10 +51,10 @@ class _CitySearch extends Component {
             <div className="search-container">
                 <Autocomplete
                     onChange={this.onSelectCity}
-                    style={{width:'fit-content'}}
+                    style={{width:'100%', maxWidth: '768px'}}
                     options={this.state.cities.map((city) => city.LocalizedName)}
                     renderInput={(params) => (
-                        <TextField {...params} value={this.state.searchField} onChange={this.onChange} label="Find city" style={{width: '20rem'}} margin="normal" variant="outlined" />
+                        <TextField {...params} value={this.state.searchField} onChange={this.onChange} label="Find city" style={{width: '100%'}} margin="normal" variant="outlined" />
                     )}
                 />
             </div>

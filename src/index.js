@@ -5,15 +5,17 @@ import { App } from './App';
 import * as serviceWorker from './serviceWorker';
 import { store } from './store/store';
 import './assets/styles/global.scss';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 
 ReactDOM.render(
   <BrowserRouter>
     <Provider store={store}>
-      <App />
+      <Switch>
+        <Route path="/" component={App} />
+      </Switch>
     </Provider>
-    </BrowserRouter>,
+  </BrowserRouter>,
 
   document.getElementById('root')
 );
