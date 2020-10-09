@@ -9,6 +9,8 @@ import WbSunnyIcon from '@material-ui/icons/WbSunny';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import { UserPrefToggles } from './cmps/UserPrefToggles';
 import { connect } from 'react-redux';
+
+
 const logo = require('./assets/imgs/logo.svg')
 
 function _App(props) {
@@ -16,7 +18,7 @@ function _App(props) {
   const [view, setView] = useState(0)
   const history = useHistory()
   const location = useLocation()
-  
+
   useEffect(() => {
     const view = (location.pathname === '/favorites') ? 1 : 0
     setView(view)
@@ -33,17 +35,17 @@ function _App(props) {
   return (
     <div className={`App ${displayMode}`}>
       <header className="App-header">
-        <div className="logo-container">
+        <div className="logo-container" onClick={() => history.push('/')}>
           <img src={logo} alt="logo" />
         </div>
         <Navbar />
         <UserPrefToggles />
       </header>
       <SwipeableViews index={view} onSwitching={handleChange} enableMouseEvents={true} >
-        
-          <Weather />
-          <Favorites />
-        
+
+        <Weather />
+        <Favorites />
+
       </SwipeableViews>
       <div className="bottom-navigation">
         <BottomNavigation className={displayMode} value={view} onChange={(event, newValue) => handleChange(newValue)}>
@@ -56,7 +58,7 @@ function _App(props) {
 }
 
 const mapStateToProps = (state) => ({
-    darkMode: state.userPrefsReducer.darkMode
+  darkMode: state.userPrefsReducer.darkMode
 })
 
 export const App = connect(mapStateToProps)(_App)

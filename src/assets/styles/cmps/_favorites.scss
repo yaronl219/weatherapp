@@ -1,6 +1,6 @@
 .favorites-section {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(10rem,1fr));   
+    grid-template-columns: repeat(auto-fit, minmax(10rem,48%));   
     gap: 0.5rem;
 }
 
@@ -27,12 +27,13 @@
     position: relative;
     border: 1px solid rgb(32,32,32);
     color: white;
-    
+    height: 15rem;
     border-radius: 0.25rem;
     padding: 1rem;
     text-align: center;
     display: flex;
     flex-direction: column;
+    justify-content: space-evenly;
     align-items: center;
     * {
         margin-top: 0.375rem;

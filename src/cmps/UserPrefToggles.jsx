@@ -15,17 +15,25 @@ function _UserPrefToggles(props) {
                     <MenuIcon />
                 </IconButton>
             </Tooltip>
-            <Menu anchorEl={ref.current} open={isOpen} onClose={() => setOpen(false)}>
+            <Menu anchorEl={ref.current} anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+            }} 
+            transformOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+              }}
+              open={isOpen} onClose={() => setOpen(false)}>
                 <FormGroup>
                     <MenuItem className="menu-item">
                         <span className="switch-off-state">Light Mode</span>
                         <FormControlLabel
-                            control={<Switch  checked={props.darkMode} onChange={(ev) => props.setDarkMode(ev.target.checked)} />}
+                            control={<Switch checked={props.darkMode} onChange={(ev) => props.setDarkMode(ev.target.checked)} />}
                         />
                         <span>Dark Mode</span>
                     </MenuItem>
                     <MenuItem>
-                    <span className="switch-off-state">Fahrenheit</span>
+                        <span className="switch-off-state">Fahrenheit</span>
                         <FormControlLabel
                             control={<Switch checked={props.isCelsius} onChange={(ev) => props.setCelsius(ev.target.checked)} />}
                         />
