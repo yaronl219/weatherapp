@@ -1,8 +1,4 @@
 
-
-
-
-
 export const weatherService = {
     getCityCurrWeather,
     getCityByName,
@@ -13,12 +9,12 @@ export const weatherService = {
     getApiKey
 }
 
-var API_KEY = null
+var API_KEY = getApiKey()
 
 async function getCityCurrWeather(locationKey) {
-    if (!API_KEY) getApiKey()
+    const apiKey = await API_KEY
 try {
-    const cityCurrWeather = await _HTTPget(`https://dataservice.accuweather.com/currentconditions/v1/${locationKey}?apikey=${API_KEY}&details=true`)
+    const cityCurrWeather = await _HTTPget(`https://dataservice.accuweather.com/currentconditions/v1/${locationKey}?apikey=${apiKey}&details=true`)
     return cityCurrWeather
 } catch (err) {
     console.log(err)
@@ -26,12 +22,11 @@ try {
 }
 }
 
-
-
 async function getWeatherForecast(locationKey, isCelsius = true) {
-    if (!API_KEY) getApiKey()
+    const apiKey = await API_KEY
+    
     try {
-    const cityForecast = await _HTTPget(`https://dataservice.accuweather.com/forecasts/v1/daily/5day/${locationKey}?apikey=${API_KEY}&metric=${isCelsius}`)
+    const cityForecast = await _HTTPget(`https://dataservice.accuweather.com/forecasts/v1/daily/5day/${locationKey}?apikey=${apiKey}&metric=${isCelsius}`)
     return cityForecast
 } catch (err) {
     console.log(err)
@@ -40,9 +35,10 @@ async function getWeatherForecast(locationKey, isCelsius = true) {
 }
 
 async function getCityByCoords(lat, lng) {
-    if (!API_KEY) getApiKey()
+    const apiKey = await API_KEY
+    
     try {
-        const city = await _HTTPget(`https://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=${API_KEY}&q=${lat},${lng}`)
+        const city = await _HTTPget(`https://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=${apiKey}&q=${lat},${lng}`)
         return city
     } catch (err) {
         console.log(err)
@@ -50,11 +46,10 @@ async function getCityByCoords(lat, lng) {
     }
 }
 
-
 async function getCityByName(partialName) {
-    if (!API_KEY) getApiKey()
+    const apiKey = await API_KEY
     try {
-        const cities = await _HTTPget(`https://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=${API_KEY}&q=${partialName}`)
+        const cities = await _HTTPget(`https://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=${apiKey}&q=${partialName}`)
         return cities
 
     } catch (err) {
@@ -74,23 +69,35 @@ function getWeatherIcon(iconNum) {
 
 async function _HTTPget(url) {
     let data;
-    const res = await fetch(url)
-    data = await res.json()
-    return data
+    
+    try {
+
+        const res = await fetch(url)
+        data = await res.json()
+        return data
+    } catch (err) {
+        console.log(err)
+        throw err
+    }
 }
 
 async function getApiKey() {
+  
+    // // I added this in order to bypass the 50 calls per day per API key.
 
-    const apiKeys = ['x6SNjBEgOiwSoE0Sm7AFRco0OWsPxKcT', 'jbQCGr5hw3CneCAiXlvKodc3ASLREpxy', '17nM18URNW0l13ncG90uLIxINREYuwzk']
-    for (let i = 0; i < apiKeys.length; i++) {
-        try {
-            await _HTTPget(`https://dataservice.accuweather.com/currentconditions/v1/215836?apikey=${apiKeys[i]}&details=true`)
-            
-            return API_KEY = apiKeys[i]
-        } catch (err) {
-            console.log(err)
-        }
-    }    
-    console.log('no keys')
-    return 'No keys available'
+    return new Promise(async (resolve,reject) => {
+        const apiKeys = ['x6SNjBEgOiwSoE0Sm7AFRco0OWsPxKcT', 'jbQCGr5hw3CneCAiXlvKodc3ASLREpxy', '17nM18URNW0l13ncG90uLIxINREYuwzk']
+        for (let i = 0; i < apiKeys.length; i++) {
+            try {
+                await _HTTPget(`https://dataservice.accuweather.com/currentconditions/v1/215836?apikey=${apiKeys[i]}&details=true`)
+                resolve(apiKeys[i])
+                return apiKeys[i]
+            } catch (err) {
+                console.log('API key not working - switching to next one')
+            }
+        }    
+        console.log('no keys')
+        reject()
+        return 'No keys available'
+    })
 }

@@ -15,10 +15,7 @@ function _UserPrefToggles(props) {
                     <MenuIcon />
                 </IconButton>
             </Tooltip>
-            <Menu anchorEl={ref.current} anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-            }} 
+            <Menu anchorEl={ref.current} 
             transformOrigin={{
                 vertical: 'bottom',
                 horizontal: 'right',
