@@ -27,7 +27,8 @@ function _App(props) {
 
   const handleChange = (newValue) => {
     const path = (!newValue) ? 'city' : 'favorites'
-    history.push(path)
+    // history.push(path)
+    window.location.replace(path)
   };
 
   const displayMode = (props.darkMode) ? 'dark' : 'light'
