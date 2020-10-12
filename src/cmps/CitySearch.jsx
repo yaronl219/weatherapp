@@ -1,65 +1,45 @@
 import { TextField } from '@material-ui/core'
 import { Autocomplete } from '@material-ui/lab'
-import React, { Component } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
-
 import { weatherService } from '../service/weatherService'
 import { setCurrCity } from '../store/actions/cityActions'
 
+function _CitySearch(props) {
 
-class _CitySearch extends Component {
-    state = {
-        searchField: '',
-        cities: [],
-        isCitiesListOpen: false
+    const [searchField,setSearchField] = React.useState('')
+    const [cities, setCities] = React.useState([])
+
+    async function getCitiesByName(query) {
+        const citiesForDisplay = await weatherService.getCityByName(query)
+        if (!citiesForDisplay) return
+        setCities(citiesForDisplay)
     }
 
-    ref = React.createRef()
-
-    getCitiesByName = async () => {
-        const cities = await weatherService.getCityByName(this.state.searchField)
-        if (!cities) return
-        const isCitiesListOpen = Boolean(cities.length)
-        this.setState({ cities, isCitiesListOpen })
-    }
-
-    onSelectCity = (ev,cityName) => {
+    function onSelectCity(ev,cityName) {
         if (!cityName) return
-        const city = this.state.cities.find(city => city.LocalizedName === cityName)
-        this.props.setCurrCity(city)
-        this.onCloseCitiesList()
-
+        const city = cities.find(city => city.LocalizedName === cityName)
+        props.setCurrCity(city)
     }
 
-    onOpenCitiesList = () => {
-        if (!this.state.cities || this.state.cities.length) return
-        this.setState({ isCitiesListOpen: true })
+    function onChange(ev) {
+        setSearchField(ev.target.value)
+        getCitiesByName(ev.target.value)
     }
 
-    onCloseCitiesList = () => {
-        this.setState({ isCitiesListOpen: false })
-    }
-
-    onChange = (ev) => {
-        this.setState({ searchField: ev.target.value }, this.getCitiesByName)
-    }
-
-
-
-    render() {
         return (
             <div className="search-container">
                 <Autocomplete
-                    onChange={this.onSelectCity}
+                    onChange={onSelectCity}
                     style={{width:'100%', maxWidth: '768px'}}
-                    options={this.state.cities.map((city) => city.LocalizedName)}
+                    options={cities.map((city) => city.LocalizedName)}
                     renderInput={(params) => (
-                        <TextField {...params} value={this.state.searchField} onChange={this.onChange} label="Find city" style={{width: '100%'}} margin="normal" variant="outlined" />
+                        <TextField {...params} value={searchField} onChange={onChange} label="Find city" style={{width: '100%'}} margin="normal" variant="outlined" />
                     )}
                 />
             </div>
         )
-    }
+    
 }
 
 

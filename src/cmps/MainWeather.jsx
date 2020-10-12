@@ -1,5 +1,5 @@
 import { CircularProgress, IconButton } from '@material-ui/core'
-import React, { Component } from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { weatherService } from '../service/weatherService'
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
@@ -8,105 +8,97 @@ import { setFavorites } from '../store/actions/favoriteActions';
 import { MinifiedWeather } from './MinifiedWeather';
 import { setCurrCity } from '../store/actions/cityActions';
 
-export class _MainWeather extends Component {
+export function _MainWeather(props) {
 
-    state = {
-        currWeather: null,
-        weatherForecast: null
-    }
+    const [currWeather, setCurrWeather] = React.useState(null)
+    const [weatherForecast, setWeatherForecast] = React.useState(null)
 
-    componentDidMount() {
-        navigator.geolocation.getCurrentPosition(this.setUserLocation)
-    }
+    useEffect(() => {
+        navigator.geolocation.getCurrentPosition(setUserLocation)
+    }, [])
     
-    componentDidUpdate(prevProps) {
-        if (prevProps.currCity !== this.props.currCity) {
-            this.getCityWeather()
-            this.getWeatherForecast()
-        }
-    }
 
-    setUserLocation = async(loc) => {
+    useEffect(() => {
+        if (props.currCity) {
+            getCityWeather()
+            getWeatherForecast()
+        }
+    }, [props.currCity])
+
+
+    async function setUserLocation(loc) {
         const {latitude,longitude} = loc.coords
         const city = await  weatherService.getCityByCoords(latitude,longitude)
-        this.props.setCurrCity(city)
+        props.setCurrCity(city)
     }
 
-
-    toggleFavoriteStatus = (shouldAddFavorite) => {
-        let favorites = [...this.props.favorites];
+    async function toggleFavoriteStatus(shouldAddFavorite) {
+        let favorites = [...props.favorites];
         if (shouldAddFavorite) {
-            favorites.push(this.props.currCity)
+            favorites.push(props.currCity)
         } else {
-            favorites = favorites.filter(city => city.Key !== this.props.currCity.Key)
+            favorites = favorites.filter(city => city.Key !== props.currCity.Key)
         }
-        this.props.setFavorites(favorites)
+        props.setFavorites(favorites)
     }
 
-    getFavoriteIcon = () => {
-        const isFavorite = Boolean(this.props.favorites.findIndex(city => city.Key === this.props.currCity.Key) >= 0)
-        return (<IconButton onClick={() => this.toggleFavoriteStatus(!isFavorite)}>
+    function getFavoriteIcon() {
+        const isFavorite = Boolean(props.favorites.findIndex(city => city.Key === props.currCity.Key) >= 0)
+        return (<IconButton onClick={() => toggleFavoriteStatus(!isFavorite)}>
                     { (isFavorite) ? <FavoriteIcon /> : <FavoriteBorderIcon />}
                 </IconButton>)
     }
 
-    getCurrentDegrees = () => {
-        const currWeather = this.state.currWeather
+    function getCurrentDegrees(){
         if (!currWeather) return <CircularProgress />
-
         return (<React.Fragment>
-            {(this.props.isCelsius) ? `${currWeather.Temperature.Metric.Value} C` : `${currWeather.Temperature.Imperial.Value} F`}
+            {(props.isCelsius) ? `${currWeather.Temperature.Metric.Value} C` : `${currWeather.Temperature.Imperial.Value} F`}
         </React.Fragment>)
     }
 
-
-    getWeatherForecast = async() => {
-        const weatherForecast = await weatherService.getWeatherForecast(this.props.currCity.Key,this.props.isCelsius)
-        
-        this.setState({weatherForecast})
+    async function getWeatherForecast() {
+        const weatherForecast = await weatherService.getWeatherForecast(props.currCity.Key,props.isCelsius)
+        setWeatherForecast(weatherForecast)
+        // this.setState({weatherForecast})
     }
 
-    getCityWeather = async () => {
-        const currWeather = await weatherService.getCityCurrWeather(this.props.currCity.Key)
-        this.setState({ currWeather:currWeather[0] })
+    async function getCityWeather() {
+        const currWeather = await weatherService.getCityCurrWeather(props.currCity.Key)
+        // this.setState({ currWeather:currWeather[0] })
+        setCurrWeather(currWeather[0])
     }
 
-    getIsDay = () => {
-        const {currWeather} = this.state
+    function getIsDay() {
         if (!currWeather) return
         return (currWeather.IsDayTime) ? 'day-time' : 'night-time'
     }
 
-    render() {
-        const { currCity } = this.props
-        if (!currCity) return <React.Fragment />
+    const { currCity } = props
+    if (!currCity) return <React.Fragment />
         return (
-            <main className={`weather-container ${this.getIsDay()}`}>
+            <main className={`weather-container ${getIsDay()}`}>
                 <div className="weather-top">
                     <div className="city-details">
                         <div className="city-name">{currCity.LocalizedName}, {currCity.Country.LocalizedName}</div>
-                        <div className="city-degrees">{this.getCurrentDegrees()}</div>
+                        <div className="city-degrees">{getCurrentDegrees()}</div>
                     </div>
                     <div className="favorite-container">
-                        {this.getFavoriteIcon()}
+                        {getFavoriteIcon()}
                     </div>
                 </div>
-                
                     <div className="weather-main">
-                    {(this.state.currWeather) ? (<React.Fragment>
-                        <img src={weatherService.getWeatherIcon(this.state.currWeather.WeatherIcon)} alt="weather-icon"/>
-                    <h2>{this.state.currWeather.WeatherText}</h2>
+                    {(currWeather) ? (<React.Fragment>
+                        <img src={weatherService.getWeatherIcon(currWeather.WeatherIcon)} alt="weather-icon"/>
+                    <h2>{currWeather.WeatherText}</h2>
                     </React.Fragment>
                     ) : <CircularProgress />
                     }
-                </div> 
-                
+                </div>  
                 <div className="weather-forecast">
-                 {(this.state.weatherForecast) ? this.state.weatherForecast.DailyForecasts.map(day => <MinifiedWeather key={day.EpochDate} darkMode={this.props.darkMode} isCelsius={this.props.isCelsius} dailyForecast={day} /> ) : <CircularProgress />}
+                 {(weatherForecast) ? weatherForecast.DailyForecasts.map(day => <MinifiedWeather key={day.EpochDate} darkMode={props.darkMode} isCelsius={props.isCelsius} dailyForecast={day} /> ) : <CircularProgress />}
                 </div>
             </main>
         )
-    }
 }
 
 const mapStateToProps = state => {
