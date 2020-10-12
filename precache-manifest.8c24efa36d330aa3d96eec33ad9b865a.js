@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "0ce8ffeb2223ddcf59e83d6b3deed944",
+    "revision": "ff9d85d6a1b0a6318c9f92f7f61dc150",
     "url": "/yaron-lipshitz-07-10-2020/index.html"
   },
   {
-    "revision": "5577d577534a21e928e5",
+    "revision": "1c53207a03fc2cd2ed56",
     "url": "/yaron-lipshitz-07-10-2020/static/css/main.57d66ce0.chunk.css"
   },
   {
-    "revision": "7c0f925ae0cca84a7df1",
-    "url": "/yaron-lipshitz-07-10-2020/static/js/2.f20c1b8e.chunk.js"
+    "revision": "cdf04a5961f33e1fe9b3",
+    "url": "/yaron-lipshitz-07-10-2020/static/js/2.8aaff90d.chunk.js"
   },
   {
     "revision": "89b0379e7bcda1a468d8b0343aeb4e53",
-    "url": "/yaron-lipshitz-07-10-2020/static/js/2.f20c1b8e.chunk.js.LICENSE.txt"
+    "url": "/yaron-lipshitz-07-10-2020/static/js/2.8aaff90d.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "5577d577534a21e928e5",
-    "url": "/yaron-lipshitz-07-10-2020/static/js/main.ffb122f9.chunk.js"
+    "revision": "1c53207a03fc2cd2ed56",
+    "url": "/yaron-lipshitz-07-10-2020/static/js/main.28e0d62f.chunk.js"
   },
   {
     "revision": "345f03ed986dddfbf226",
