@@ -2,7 +2,7 @@
   "name": "weather-app",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://yaronl219.github.io/yaron-lipshitz-07-10-2020/",
+  "homepage": "https://yaronl219.github.io/weatherapp/",
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",

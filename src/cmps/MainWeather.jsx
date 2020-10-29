@@ -59,12 +59,10 @@ export function _MainWeather(props) {
     async function getWeatherForecast() {
         const weatherForecast = await weatherService.getWeatherForecast(props.currCity.Key,props.isCelsius)
         setWeatherForecast(weatherForecast)
-        // this.setState({weatherForecast})
     }
 
     async function getCityWeather() {
         const currWeather = await weatherService.getCityCurrWeather(props.currCity.Key)
-        // this.setState({ currWeather:currWeather[0] })
         setCurrWeather(currWeather[0])
     }
 
